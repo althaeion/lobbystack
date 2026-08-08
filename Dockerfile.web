@@ -20,6 +20,10 @@ ARG VITE_POSTHOG_HOST
 ARG VITE_POSTHOG_UI_HOST
 ARG VITE_TURNSTILE_SITE_KEY
 ARG VITE_WEB_CALL_ENDPOINT
+# Host backend that mints this user's credentials (apps/web/src/lib/embedAuth.ts).
+# Vite bakes import.meta.env.* at build time, so without this ARG the Railway
+# variable never reaches the bundle and the embedded build has no host to ask.
+ARG VITE_FR_BACKEND
 
 ENV CONVEX_URL=$CONVEX_URL
 ENV CONVEX_SITE_URL=$CONVEX_SITE_URL
@@ -30,6 +34,7 @@ ENV VITE_POSTHOG_HOST=$VITE_POSTHOG_HOST
 ENV VITE_POSTHOG_UI_HOST=$VITE_POSTHOG_UI_HOST
 ENV VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY
 ENV VITE_WEB_CALL_ENDPOINT=$VITE_WEB_CALL_ENDPOINT
+ENV VITE_FR_BACKEND=$VITE_FR_BACKEND
 
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @lobbystack/web build
